@@ -10,7 +10,10 @@ RUN yum install -y \
   gcc \
   make \
   perl \
-  pcre-devel
+  pcre-devel \
+  zlib-devel \
+  lua-devel \
+  openssl-devel
 
 # Install Development Tools for compile apache
 #RUN yum -y groupinstall "Development Tools"
@@ -24,6 +27,36 @@ WORKDIR /tmp/httpd-2.4.6
 RUN ./configure \
     --prefix=/etc/httpd \
     --with-included-apr \
-    --enable-asis
+    --enable-asis \
+    --enable-cgi \
+    --enable-charset-lite \
+    --enable-data \
+    --enable-dav \
+    --enable-deflate \
+    --enable-dialup \
+    --enable-echo \
+    --enable-heartbeat \
+    --enable-heartmonitor \
+    --enable-log-forensic \
+    --enable-lua \
+    --enable-mime-magic \
+    --with-mpm=prefork \
+    --with-mpm=event \
+    --with-mpm=worker \
+    --enable-proxy-fdpass \
+    --enable-reflector \
+    --enable-slotmem-plain \
+    --enable-ssl \
+    --enable-suexec \
+    --enable-usertrack \
+    --enable-watchdog \
+    --enable-rewrite
 
 RUN make && make install
+
+# On clean le répertoire /tmp de l'image
+RUN rm -rf /tmp/*
+
+# Lance apache
+CMD ["/etc/httpd/bin/apachectl","-DFOREGROUND"]
+

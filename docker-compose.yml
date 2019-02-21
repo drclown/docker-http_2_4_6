@@ -1,0 +1,10 @@
+version: '2'
+services:
+  app:
+    image: centos_app
+    ports:
+      - 8086:80
+    volumes:
+      - ./app/:/var/www/html/servo
+      - ./conf/httpd.conf:/etc/httpd/conf/httpd.conf
+      - ./conf/vhost.conf:/etc/httpd/conf/extra/servo-vhost.conf
